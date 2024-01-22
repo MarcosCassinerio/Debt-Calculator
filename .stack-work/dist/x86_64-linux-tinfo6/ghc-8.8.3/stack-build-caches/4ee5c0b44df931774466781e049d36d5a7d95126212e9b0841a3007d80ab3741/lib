@@ -1,0 +1,28 @@
+/home/nano/TP-FINAL/.stack-work/dist/x86_64-linux-tinfo6/ghc-8.8.3/build/autogen/Paths_TP_FINAL.hs:
+  hash: eb86d22443ef468f55a8e728cb01d50ad056948368cae3388a9f49624ec77886
+/home/nano/TP-FINAL/.stack-work/dist/x86_64-linux-tinfo6/ghc-8.8.3/build/autogen/cabal_macros.h:
+  hash: a0036e15d0e72fb16ffad1be558ab872588050bd5be049b47b276d4d9480edc4
+/home/nano/TP-FINAL/ChangeLog.md:
+  hash: ed3fa83cd1b24d8b5ef6395abc951116dea541a5957932248457bb1e171776d0
+/home/nano/TP-FINAL/README.md:
+  hash: be0b2a544a83fa1ddea9864c00d556d76efef21f754865b6b3c3c826fce6af36
+/home/nano/TP-FINAL/TP-FINAL.cabal:
+  hash: b6d5f13816febfd4148c8d67afc67d87ed22d4a30759a5e2f2ea6dba5dd43ccb
+/home/nano/TP-FINAL/package.yaml:
+  hash: a653072499106cabf9a3d319e1d3b9da87d985e13489eb3fecb0de6f4889d4e8
+/home/nano/TP-FINAL/src/Common.hs:
+  hash: 791623c2cd134d81875332f72178f1fb7773b14df55ff9e03fde7af26d4ee594
+/home/nano/TP-FINAL/src/Def.hs:
+  hash: 70180fee99ac33469e5fd956e62ef5c674ccb4f36d081d52a5773f7c0e8f1ee3
+/home/nano/TP-FINAL/src/Graph.hs:
+  hash: f6638a7c8eab9f4db7895f1262c07f645a25dc4b11e7e39a97fd3b553b44d149
+/home/nano/TP-FINAL/src/Monads.hs:
+  hash: 1c3da7eb45a7157c76ee215a91b866fc31e8b2dff0008b533ad22144b5478b33
+/home/nano/TP-FINAL/src/Parse.y:
+  hash: ecebd3a5dcbf2e42f37835dcaa7c8ee5ff484807e2387d193b776543c4b0fb86
+/home/nano/TP-FINAL/src/PrettyPrinter.hs:
+  hash: f758ef56b40228fff034cfa69c55788f6077c9e96cdf20c80aa95162b2dbf5c7
+/root/.stack/programs/x86_64-linux/ghc-tinfo6-8.8.3/lib/ghc-8.8.3/include/ghcversion.h:
+  hash: 40d1b759f485f1cd5a54141a6412691ac2b76930507289a16a6a7b89b045b4d2
+/usr/include/stdc-predef.h:
+  hash: cb08cd5d4cc059a90833ac48a284d25016e8d56ded8ad4cd98d8ac59cc5053f3

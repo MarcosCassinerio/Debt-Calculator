@@ -1,0 +1,86 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.36.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 4a2a693e42c9e773b5c9c7511bc3f89bfc516f62fa73a1236ca43c908dcd97f1
+
+name:           TP-FINAL
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/TP3#readme>
+homepage:       https://github.com/githubuser/TP3#readme
+bug-reports:    https://github.com/githubuser/TP3/issues
+author:         Marcos Cassinerio
+maintainer:     example@example.com
+copyright:      2024 Marcos Cassinerio
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/TP3
+
+library
+  exposed-modules:
+      Common
+      Def
+      Graph
+      Monads
+      Parse
+      PrettyPrinter
+  other-modules:
+      Paths_TP_FINAL
+  hs-source-dirs:
+      src
+  default-extensions:
+      TupleSections
+      MultiWayIf
+      LambdaCase
+      DataKinds
+      PolyKinds
+      FlexibleInstances
+      FlexibleContexts
+  build-depends:
+      QuickCheck
+    , array
+    , base >=4.7 && <5
+    , exceptions
+    , haskeline >=0.8.0.0
+    , mtl
+    , pretty
+    , containers
+  default-language: Haskell2010
+
+executable TP-FINAL-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_TP_FINAL
+  hs-source-dirs:
+      app
+  default-extensions:
+      TupleSections
+      MultiWayIf
+      LambdaCase
+      DataKinds
+      PolyKinds
+      FlexibleInstances
+      FlexibleContexts
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-tools:
+      happy
+  build-depends:
+      QuickCheck
+    , TP-FINAL
+    , array
+    , base >=4.7 && <5
+    , exceptions
+    , haskeline >=0.8.0.0
+    , mtl
+    , pretty
+    , containers
+  default-language: Haskell2010
