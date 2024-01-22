@@ -4,9 +4,9 @@ DEFINEP Dante
 DEFINEG Pibes [Pepe, Jose, Dante]
 DEFINEG NoDante [Pepe, Jose]
 DEBTP Dante 100
-DEBTP Jose 50
+DEBTP Josep 50
 DEBTG Dante Pibes 40
-DEBTG Pepe NoDante 30
+DEBTG Dante NoDante 30
 DEBTG Jose Pibes 80
 EXPENSE Pepe 50
 EXPENSE NoDante 60

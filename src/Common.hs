@@ -37,5 +37,5 @@ type Operations = M.Map Person (M.Map Person Int)
 
 type Arc = ((Person, Person), Int)
 
-data Error = NameNotFound | NameAlreadyExists | WrongName | NameNotInGroup
+data Error = NameNotFound Name | NameAlreadyExists Name | NameNotInGroup Name Name
   deriving (Eq, Show)

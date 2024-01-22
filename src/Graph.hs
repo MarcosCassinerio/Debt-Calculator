@@ -3,6 +3,12 @@ module Graph where
 import qualified Data.Map.Strict as M
 import Common
 
+-- Toma un objeto y una lista de ese mismo tipo
+-- Elimina el objeto de la lista
+delete :: Eq a => a -> [a] -> [a]
+delete x [] = []
+delete x (y:ys) = if x == y then ys else y:(delete x ys)
+
 eval :: Exp -> Env -> String
 eval (Calculate n) env = show (calculate env n)
 eval CalculateAll env = show (calculateAll env)
@@ -25,16 +31,12 @@ transformToHash ((n, (l, o)):xs) = transformToHash' (concat (map (generateDebt l
                                         Self -> map (\x -> ((Other x, Self), val)) l
                                         Other a -> ((Self, p), val):(map (\x -> ((Other x, p), val)) (delete a l))
 
-delete :: Eq a => a -> [a] -> [a]
-delete x [] = []
-delete x (y:ys) = if x == y then ys else y:(delete x ys)
-
 -- Toma un entorno y un nombre
 -- Genera las operaciones de ese grupo o persona y devuelve las deudas (aristas) simplificando tanto los ciclos como los caminos de igual coste
 -- Si no existe ese nombre devuelve el error adecuado
 calculate :: Env -> Name -> Either Error [Arc]
-calculate [] _ = Left NameNotFound
-calculate (e@(n, _):xs) s = if n == s0 3
+calculate [] n = Left (NameNotFound n)
+calculate (e@(n, _):xs) s = if n == s
                             then let (_, ops) = deleteSameCostPaths (deleteAllCicles ([Self, Other n], transformToHash [e]))
                                  in Right $ operationsToArcs ops
                             else calculate xs s
@@ -46,12 +48,14 @@ calculateAll :: Env -> [Arc]
 calculateAll xs = let (l, ops) = deleteSameCostPaths (deleteAllCicles (Self:(map (\x -> Other (fst x)) xs), transformToHash xs))
                   in operationsToArcs ops
 
--- 
+-- Toma operaciones
 -- Transforma las operaciones a aristas (deudas)
 operationsToArcs :: Operations -> [Arc]
 operationsToArcs ops = let l = M.toList ops
                        in [((p1, p2), i) | (p1, m) <- l, (p2, i) <- M.toList m]
 
+-- Toma un grafo
+-- Devuelve el grafo pero habiendo eliminado los caminos cuyas aristas tienen el mismo coste
 deleteSameCostPaths :: Graph -> Graph
 deleteSameCostPaths g@(l@(x:xs), ops) = deleteSameCostPaths' g l (maybe [] M.toList (M.lookup x ops))
   where deleteSameCostPaths' :: Graph -> [Person] -> [(Person, Int)] -> Graph
@@ -77,6 +81,8 @@ deleteSameCostPaths g@(l@(x:xs), ops) = deleteSameCostPaths' g l (maybe [] M.toL
                                          then ((p, i + i'):xs)
                                          else ((p, i):(addPath xs v))
 
+-- Toma un grafo
+-- Devuelve el grafo habiendo eliminado todos los ciclos
 deleteAllCicles :: Graph -> Graph
 deleteAllCicles g = deleteAllCicles' g (fst g) (length (fst g))
   where deleteAllCicles' :: Graph -> [Person] -> Int -> Graph
@@ -111,7 +117,7 @@ deleteAllCicles g = deleteAllCicles' g (fst g) (length (fst g))
 -- Toma un entorno y un nombre
 -- Devuelve las operaciones hechas en ese grupo o persona
 registry :: Env -> Name -> Either Error [(Name, (Person, Int))]
-registry [] _ = Left NameNotFound
+registry [] n = Left (NameNotFound n)
 registry ((n, (_, o)):xs) n' = if n == n'
                           then Right [(n, (p, i)) | (p, i) <- o]
                           else registry xs n'
@@ -120,7 +126,7 @@ registry ((n, (_, o)):xs) n' = if n == n'
 -- Devuelve los nombres de ese grupo o el mismo nombre de no ser un grupo.
 -- Si no existe ese nombre devuelve el error adecuado
 members :: Env -> Name -> Either Error [Name]
-members [] n = Left NameNotFound
+members [] n = Left (NameNotFound n)
 members ((n, (l, _)):xs) n' = if n == n'
                               then Right l
                               else members xs n'
