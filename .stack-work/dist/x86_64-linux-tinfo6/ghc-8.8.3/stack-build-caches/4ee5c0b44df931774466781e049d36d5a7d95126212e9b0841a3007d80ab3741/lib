@@ -7,21 +7,21 @@
 /home/nano/TP-FINAL/README.md:
   hash: b7088b037e6692855dbe580ec1b97b385841c5ccf8e8fbc726ff5144f3d58a26
 /home/nano/TP-FINAL/TP-FINAL.cabal:
-  hash: b6d5f13816febfd4148c8d67afc67d87ed22d4a30759a5e2f2ea6dba5dd43ccb
+  hash: cb7094271a1ec4c4c34e9d51fb0606b6871460218dbd5d3af6aa5ca4e723424f
 /home/nano/TP-FINAL/package.yaml:
-  hash: a653072499106cabf9a3d319e1d3b9da87d985e13489eb3fecb0de6f4889d4e8
+  hash: 73cc40df390162a47550bacade0beec12169168f0c2f40cc8d9cded9e54816d3
 /home/nano/TP-FINAL/src/Common.hs:
   hash: c342fe08a7e65c0022d48145f8e0a4a0d2f886f34cee8c4decd51b60d1d7a5c1
 /home/nano/TP-FINAL/src/Def.hs:
-  hash: 928d24127bd0f058112a3d01e0c999c158dd848ee94874a3a92a1cd9b038f7a4
+  hash: 1bdca6de5892816611346656e9711192465e1e74cd9f7a750cede5eb49fecb30
 /home/nano/TP-FINAL/src/Graph.hs:
-  hash: 373f9e5e316f6f4197dd2472cf32479e377391d9270e2078b8a6b5fc1c13162a
+  hash: 29b3644ce6dbbdabfe09d821f75213df6d904e34391a0ed7c2b11db6a7e9a93f
 /home/nano/TP-FINAL/src/Monads.hs:
   hash: 1c3da7eb45a7157c76ee215a91b866fc31e8b2dff0008b533ad22144b5478b33
 /home/nano/TP-FINAL/src/Parse.y:
-  hash: 1b58a632a60deddfe53fbf0f8f2287134bfc3cc96e900725e3288f8d23075225
+  hash: 7eeead4034eee01c62d0afc5bd3505af751e3dec5d9601a72c8311f12739a607
 /home/nano/TP-FINAL/src/PrettyPrinter.hs:
-  hash: f758ef56b40228fff034cfa69c55788f6077c9e96cdf20c80aa95162b2dbf5c7
+  hash: bbfd33b81b5c1a415d5639c9bf1874938754af3bf60fc7ac56b3cba5448e36fa
 /root/.stack/programs/x86_64-linux/ghc-tinfo6-8.8.3/lib/ghc-8.8.3/include/ghcversion.h:
   hash: 40d1b759f485f1cd5a54141a6412691ac2b76930507289a16a6a7b89b045b4d2
 /usr/include/stdc-predef.h:

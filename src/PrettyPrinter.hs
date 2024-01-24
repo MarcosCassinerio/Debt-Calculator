@@ -1,36 +1,46 @@
 module PrettyPrinter where
 
-import           Common
-import           Text.PrettyPrint.HughesPJ
-import           Prelude                 hiding ( (<>) )
+import Common
+import Text.PrettyPrint.HughesPJ
+import Prelude hiding ( (<>) )
 
-print :: Exp -> Doc
-print (DefineP n) =
-  text "DEFINEP"
-    <> text n
-print (DefineG n nl) =
-  text "DEFINEP"
-print (DebtP n i) = 
-  text "DEBTP"
-    <> text n
-    <> text "1"
-print (DebtG g n i) = 
-  text "DEBTG"
-    <> text g
-    <> text n
-    <> text "1"
-print (Expense n i) = 
-  text "EXPENSE"
-    <> text n
-    <> text "1"
-print (Calculate n) = 
-  text "CALCULATE"
-    <> text n
-print CalculateAll = 
-  text "CALCULATEALL"
-print (Registry n) =
-  text "REGISTRY"
-    <> text n
-print (Members n) = 
-  text "MEMBERS"
-    <> text n
+printEnv :: Env -> Doc
+printEnv [] = text ""
+printEnv ((n, (l, o)):xs) = if [n] == l
+                            then text n 
+                                 <> if o == []
+                                    then text " []"
+                                    else text " [\n"
+                                         <> printOps o
+                                         <> text "]\n\n"
+                                 <> printEnv xs
+                            else text n
+                                 <> text " "
+                                 <> text (show l)
+                                 <> if o == []
+                                    then text " []"
+                                    else text " [\n"
+                                         <> printOps o
+                                         <> text "]\n\n"
+                                 <> printEnv xs
+
+printOps :: [Op] -> Doc
+printOps [] = text ""
+printOps [x] = text "  "
+               <> text (show x)
+               <> text "\n"
+printOps (x:xs) = text "  "
+                  <> text (show x)
+                  <> text ","
+                  <> text "\n"
+                  <> printOps xs
+
+printArcs :: [Arc] -> Doc
+printArcs [] = text ""
+printArcs (((p1, p2), i):xs) = text (show p1)
+                               <> text " -- "
+                               <> text (show i)
+                               <> text " --> "
+                               <> text (show p2)
+                               <> text "\n"
+                               <> printArcs xs

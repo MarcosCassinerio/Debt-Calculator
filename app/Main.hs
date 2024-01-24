@@ -12,9 +12,7 @@ import           System.Console.Haskeline
 import qualified Control.Monad.Catch           as MC
 import           System.Environment
 import           System.IO               hiding ( print )
-import           Text.PrettyPrint.HughesPJ      ( render
-                                                , text
-                                                )
+import           Text.PrettyPrint.HughesPJ      ( render )
 
 import           Common
 import           PrettyPrinter
@@ -34,7 +32,7 @@ main' = do
   readevalprint args (S True [])
 
 iname, iprompt :: String
-iname = "Calculo de deudas"
+iname = "Calculo de Deudas"
 iprompt = "CD> "
 
 ioExceptionCatcher :: IOException -> IO (Maybe a)
@@ -76,6 +74,7 @@ data Command = Compile CompileForm
               | Quit
               | Help
               | Noop
+              | Print
 
 data CompileForm = CompileInteractive  String
                   | CompileFile         String
@@ -105,12 +104,13 @@ interpretCommand x = lift $ if isPrefixOf ":" x
   else return (Compile (CompileInteractive x))
 
 handleCommand :: State -> Command -> InputT IO (Maybe State)
-handleCommand state@(S inter ve) cmd = case cmd of
-  Quit   -> lift $ when (not inter) (putStrLn "!@#$^&*") >> return Nothing
-  Noop   -> return (Just state)
-  Help   -> lift $ putStr (helpTxt commands) >> return (Just state)
-  Browse -> lift $ do
-    putStr $ unlines (map fst ve)
+handleCommand state@(S inter env) cmd = case cmd of
+  Quit      -> lift $ when (not inter) (putStrLn "!@#$^&*") >> return Nothing
+  Noop      -> return (Just state)
+  Help      -> lift $ putStr (helpTxt commands) >> return (Just state)
+  Print     -> lift $ putStrLn (render (printEnv env)) >> return (Just state)
+  Browse    -> lift $ do
+    putStr $ unlines (map fst env)
     return $ Just state
   Compile c -> do
     state' <- case c of
@@ -124,6 +124,7 @@ commands :: [InteractiveCommand]
 commands =
   [ Cmd [":browse"] "" (const Browse) "Ver los nombres de los grupos y personas"
   , Cmd [":load"] "<file>" (Compile . CompileFile) "Cargar un programa desde un archivo"
+  , Cmd [":print"] "" (const Print) "Imprime el entorno"
   , Cmd [":quit"]       ""       (const Quit) "Salir del intérprete"
   , Cmd [":help", ":?"] ""       (const Help) "Mostrar esta lista de comandos"
   ]
@@ -184,7 +185,7 @@ handleStmt state@(S inter env) stmt = lift $ do
     Def e -> case def e env of
                   Left err -> putStrLn (show err) >> return state
                   Right env' -> return (S inter env')
-    Eval e -> putStrLn (eval e env) >> return state
+    Eval e -> putStrLn (render (eval e env)) >> return state
 
 prelude :: String
 prelude = "Ejemplos/Prelude.lam"

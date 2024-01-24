@@ -391,7 +391,7 @@ lexer cont s = case s of
                     (',':cs) 	-> cont TComma cs
                     unknown 	-> \line -> Failed $ 
                      "Línea "++(show line)++": No se puede reconocer "++(show $ take 10 unknown)++ "..."
-                    where lexVar cs = case span isAlpha cs of
+                    where lexVar cs = case span isAlphaNum cs of
                               ("DEFINEP",rest)    	-> cont TDefineP rest
                               ("DEFINEG",rest)  	-> cont TDefineG rest
                               ("DEBTP",rest)  		-> cont TDebtP rest

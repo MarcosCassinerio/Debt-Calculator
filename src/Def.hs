@@ -29,8 +29,17 @@ instance MonadState StateError where
   create n l = StateError $ create' n l
     where create' :: Name -> [Name] -> Env -> Either Error ((), Env)
           create' n l s = case lookup n s of
-                               Nothing -> Right ((), (n, (l, [])):s)
+                               Nothing -> if [n] == l 
+                                          then Right ((), (n, (l, [])):s)
+                                          else case checkExists l s of
+                                                    Nothing -> Right ((), (n, (l, [])):s)
+                                                    Just err -> Left err
                                Just _ -> Left (NameAlreadyExists n)
+          checkExists :: [Name] -> Env -> Maybe Error
+          checkExists [] s = Nothing
+          checkExists (x:xs) s = case lookup x s of
+                                      Nothing -> Just (NameNotFound x)
+                                      Just _ -> checkExists xs s
   addOp n o = StateError $ checkEnv' n o
     where checkEnv' :: Name -> Op -> Env -> Either Error ((), Env)
           checkEnv' n o s = case lookup n s of

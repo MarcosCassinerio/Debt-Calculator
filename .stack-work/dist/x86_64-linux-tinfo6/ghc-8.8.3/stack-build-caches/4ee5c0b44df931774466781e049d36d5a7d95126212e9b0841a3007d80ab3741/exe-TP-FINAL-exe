@@ -7,11 +7,11 @@
 /home/nano/TP-FINAL/README.md:
   hash: b7088b037e6692855dbe580ec1b97b385841c5ccf8e8fbc726ff5144f3d58a26
 /home/nano/TP-FINAL/TP-FINAL.cabal:
-  hash: b6d5f13816febfd4148c8d67afc67d87ed22d4a30759a5e2f2ea6dba5dd43ccb
+  hash: cb7094271a1ec4c4c34e9d51fb0606b6871460218dbd5d3af6aa5ca4e723424f
 /home/nano/TP-FINAL/app/Main.hs:
-  hash: 855be53f6776485c61a3998fe8542e4e3b89e0ee6600ed476d4340f21ece4b8e
+  hash: d77a2aa933ddda4f29832994ef60b61bc76c685235a02cbc630f538606673e4b
 /home/nano/TP-FINAL/package.yaml:
-  hash: a653072499106cabf9a3d319e1d3b9da87d985e13489eb3fecb0de6f4889d4e8
+  hash: 73cc40df390162a47550bacade0beec12169168f0c2f40cc8d9cded9e54816d3
 /root/.stack/programs/x86_64-linux/ghc-tinfo6-8.8.3/lib/ghc-8.8.3/include/ghcversion.h:
   hash: 40d1b759f485f1cd5a54141a6412691ac2b76930507289a16a6a7b89b045b4d2
 /usr/include/stdc-predef.h:
