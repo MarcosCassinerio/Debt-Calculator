@@ -68,15 +68,15 @@ operationsToArcs ops = let l = M.toList ops
 -- Toma un grafo
 -- Devuelve el grafo pero habiendo eliminado los caminos cuyas aristas tienen el mismo coste
 deleteSameCostPaths :: Graph -> Graph
-deleteSameCostPaths g@(l@(x:xs), ops) = deleteSameCostPaths' g l (maybe [] M.toList (M.lookup x ops))
-  where deleteSameCostPaths' :: Graph -> [Person] -> [(Person, Int)] -> Graph
-        deleteSameCostPaths' g [_] [] = g
-        deleteSameCostPaths' g@(l, ops) (y:z:zs) [] = deleteSameCostPaths' g (z:zs) (maybe [] M.toList (M.lookup z ops))
-        deleteSameCostPaths' g@(l, ops) (x:xs) ((y, i):ys) = case M.lookup y ops of
-                                                                  Nothing -> deleteSameCostPaths' g (x:xs) ys
+deleteSameCostPaths g@(l@(x:xs), ops) = deleteSameCostPaths' g l (maybe [] M.toList (M.lookup x ops)) []
+  where deleteSameCostPaths' :: Graph -> [Person] -> [(Person, Int)] -> [(Person, Int)] -> Graph
+        deleteSameCostPaths' g [_] [] _ = g
+        deleteSameCostPaths' g@(l, ops) (y:z:zs) [] _ = deleteSameCostPaths' g (z:zs) (maybe [] M.toList (M.lookup z ops)) []
+        deleteSameCostPaths' g@(l, ops) (x:xs) ((y, i):ys) zs = case M.lookup y ops of
+                                                                  Nothing -> deleteSameCostPaths' g (x:xs) ys zs
                                                                   Just m -> case getSameCostArc (M.toList m) i of
-                                                                                 Nothing -> deleteSameCostPaths' g (x:xs) ys
-                                                                                 Just z -> deleteSameCostPaths' (l, updateOperations ops x y z i) (x:xs) (addPath ys (z, i))
+                                                                                 Nothing -> deleteSameCostPaths' g (x:xs) ys zs
+                                                                                 Just z -> deleteSameCostPaths' (l, updateOperations ops x y z i) (x:xs) (addPath ys zs (y, i)) ((y, i):zs)
         getSameCostArc :: [(Person, Int)] -> Int -> Maybe Person
         getSameCostArc [] _ = Nothing
         getSameCostArc ((p, i):xs) i' = if i == i' 
@@ -88,11 +88,16 @@ deleteSameCostPaths g@(l@(x:xs), ops) = deleteSameCostPaths' g l (maybe [] M.toL
                                                Just m -> case M.lookup p2 ops of
                                                               Nothing -> ops
                                                               Just m' -> M.insert p1 (M.insertWith (+) p3 n (M.delete p2 m)) (M.insert p2 (M.delete p3 m') ops)
-        addPath :: [(Person, Int)] -> (Person, Int) -> [(Person, Int)]
-        addPath [] x = [x]
-        addPath ((p, i):xs) v@(p', i') = if p == p'
-                                         then ((p, i + i'):xs)
-                                         else ((p, i):(addPath xs v))
+        addPath :: [(Person, Int)] -> [(Person, Int)] -> (Person, Int) -> [(Person, Int)]
+        addPath [] ys x = addPath' ys x
+        addPath ((p, i):xs) ys v@(p', i') = if p == p'
+                                            then ((p, i + i'):xs)
+                                            else ((p, i):(addPath xs ys v))
+        addPath' :: [(Person, Int)] -> (Person, Int) -> [(Person, Int)]
+        addPath' [] x = [x]
+        addPath' ((p, i):xs) v@(p', i') = if p == p'
+                                          then [(p, i + i')]
+                                          else addPath' xs v
 
 -- Toma un grafo
 -- Devuelve el grafo habiendo eliminado todos los ciclos

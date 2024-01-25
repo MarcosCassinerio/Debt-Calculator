@@ -59,7 +59,7 @@ readevalprint args state@(S inter ve) =
             st' <- handleCommand st c
             maybe (return ()) rec st'
   in  do
-        state' <- compileFiles (prelude : args) state
+        state' <- compileFiles (defaultFile : args) state
         when inter $ lift $ putStrLn
           (  "Intérprete de "
           ++ iname
@@ -103,6 +103,9 @@ interpretCommand x = lift $ if isPrefixOf ":" x
         return Noop
   else return (Compile (CompileInteractive x))
 
+validExtension :: String -> Bool
+validExtension s = ".dbt" `isSuffixOf` reverse (dropWhile isSpace (reverse s))
+
 handleCommand :: State -> Command -> InputT IO (Maybe State)
 handleCommand state@(S inter env) cmd = case cmd of
   Quit      -> lift $ when (not inter) (putStrLn "!@#$^&*") >> return Nothing
@@ -115,7 +118,9 @@ handleCommand state@(S inter env) cmd = case cmd of
   Compile c -> do
     state' <- case c of
       CompileInteractive s -> compilePhrase state s
-      CompileFile        f -> compileFile (state { env = [] }) f
+      CompileFile        f -> if validExtension f
+                              then compileFile (state { env = [] }) f
+                              else lift $ putStrLn ("El archivo " ++ f ++ " debe tener la extension .dbt") >> return state
     return $ Just state'
 
 data InteractiveCommand = Cmd [String] String (String -> Command) String
@@ -187,5 +192,5 @@ handleStmt state@(S inter env) stmt = lift $ do
                   Right env' -> return (S inter env')
     Eval e -> putStrLn (render (eval e env)) >> return state
 
-prelude :: String
-prelude = "Ejemplos/Prelude.lam"
+defaultFile :: String
+defaultFile = "Ejemplos/Default.dbt"
