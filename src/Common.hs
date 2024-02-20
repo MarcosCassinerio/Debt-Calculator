@@ -12,7 +12,7 @@ instance Functor Stmt where
   fmap f (Eval i)  = Eval (f i)
 
 data Person = Self | Other Name
-  deriving (Eq, Show)
+  deriving (Eq, Ord, Show)
 
 type Name = String
 

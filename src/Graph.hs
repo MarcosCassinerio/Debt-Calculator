@@ -46,9 +46,11 @@ transformToHash ((n, (l, o)):xs) = let ops = transformToHash xs
 -- Si no existe ese nombre devuelve el error adecuado
 calculate :: Env -> Name -> Either Error [Arc]
 calculate [] n = Left (NameNotFound n)
+calculate ((n, (_, [])):xs) s = if n == s then Right [] else calculate xs s
 calculate (e@(n, _):xs) s = if n == s
-                            then let (_, ops) = deleteSameCostPaths (deleteAllCicles (M.keys ops, transformToHash [e]))
-                                 in Right $ operationsToArcs ops
+                            then let ops = transformToHash [e]
+                                     (_, ops') = deleteSameCostPaths (deleteAllCicles (M.keys ops, ops))
+                                 in Right $ operationsToArcs ops'
                             else calculate xs s
 
 -- Toma un entorno
