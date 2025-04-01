@@ -16,7 +16,7 @@ Antes de hablar sobre cada uno de estos ítem por separado, se presentara la gra
 * `letter ::= ‘a’|‘b’|...|‘z’`
 * `var ::= letter |letter var`
 * `names ::= var ‘,’ names |var`
-* `def ::= ‘DEF IN EP ’ var`
+* `def ::= ‘DEFINEP ’ var`
 * `|‘DEFINEG’ var ‘[’ names ‘]’`
 * `|‘DEBTP ’ var val`
 * `|‘DEBTG’ var var val`
