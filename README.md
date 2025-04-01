@@ -1,66 +1,60 @@
-# TP 3 - ALP - 2020
+# DSL-debt-calculator
 
 ## Introducción
-Hola! Este README es un documento complementario al PDF de la consigna del TP. Para este trabajo no van a necesitar nada nuevo, solamente se repiten las intrucciones básicas de `stack`. Si hicieron los TPs 1 y 2, lo único que les va a ser útil  es la sección **Estructura del código**.
+Este es el trabajo final de la materia `Analisis de Lenguajes de Programacion`. El mismo consiste de un DSL (lenguaje de dominio especifico) para la definicion de personas, grupos entre personas y donde se pueden cargar gastos tanto propios como ajenos. Luego se puede hacer una consulta de las deudas finales resumidas, tanto a nivel global, en un grupo o entre 2 personas. 
+El lenguaje sobre el que fue programado es haskell.
 
-### Stack
-Para este TP vamos a usar [**Stack**](https://docs.haskellstack.org/), una herramienta sencilla para desarrollar poryectos en Haskell. Stack tiene muchas utilidades, pero ahora nos vamos a concentrar sus funciones básicas.
+### Manual de uso
 
-Antes que nada, puede que tengas que instalarlo. En [1](https://docs.haskellstack.org/en/stable/README/#how-to-install) hay guías de instalación para distintas plataformas.
+El uso de este proyecto consiste en 2 partes. Inicialmente esta la carga de un archivo de deudas, este deberá tener una extensión .dbt. Luego, se podrá hacer uso del interprete para correr las [acciones](#interprete).
+Una vez teniendo todo descargado, se deberá correr el comando `stack run`. Este tomara por defecto el archivo Default.dbt situado en Ejemplos y generara las deudas adecuadas.
+También, al correr ese comando, se entrara en el interprete.
+Antes de hablar sobre cada uno de estos ítem por separado, se presentara la gramática con la que se trabajo.
 
-Stack se encarga de instalar la versión correcta de GHC, instalar los paquetes necesarios y compilar el proyecto. Para las primeras dos, basta con abrir una terminal en el directorio `TP3` y ejecutar:
-```
-stack setup
-```
-Esto puede demorar un rato porque se encarga de descargar e instalar la verisón correcta de GHC. Este comando solo se debería tener que ejecutar una única vez. Al terminar esto, está todo listo para compilar el proyecto, que se hace con:
-```
-stack build
-```
-Este es el comando que van a tener que usar para compilar el proyecto cada vez que lo modifiquen.
+* `digit ::= ‘0’|‘1’|...|‘9’`
+* `val ::= digit | digit val`
+<br>
+* `letter ::= ‘a’|‘b’|...|‘z’`
+* `var ::= letter |letter var`
+<br>
+* `names ::= var ‘,’ names |var`
+<br>
+* `def ::= ‘DEF IN EP ’ var`
+* `|‘DEFINEG’ var ‘[’ names ‘]’`
+* `|‘DEBTP ’ var val`
+* `|‘DEBTG’ var var val`
+* `|‘EXPENSE’ var val`
+<br>
+* `op ::= ‘CALCULATE’ var`
+* `|‘CALCULATEALL’`
+* `|‘REGISTRY’ var`
+* `|‘MEMBERS’ var`
 
-### Estructura del código
-La estructura del proyecto es la siguiente:
-```
-.
-├── app
-│   └── Main.hs
-├── src
-│   ├── Common.hs
-│   ├── Simplytyped.hs
-│   ├── PrettyPrinter.hs
-│   └── Parse.y
-├── Ejemplos
-│   └── Prelude.lam
-├── test
-├── README.md
-├── Setup.hs
-├── TP3.cabal
-├── package.yaml
-├── stack.yaml
-└── stack.yaml.lock
-```
-**IMPORTANTE:** Solo deberían tener que modificar archivos de los directorios `src` y `Ejemplos`.
 
-* En el directorio `app` se define el módulo `Main`, que implementa el ejecutable final. 
+### Archivos de deuda
 
-* En el directorio `src` se encuentran los módulos sobre los que van a trabajar:
-  - `Common` define los tipos de términos y valores en la consigna junto a algunos tipos auxiliares. **Los tipos definidos en este archivo ya cuentan con todas las extensiones planteadas en el TP, por lo que no deberían tener que modificarlo.**
-  - `PrettyPrinter` tiene el Pretty Printer del lenguaje, **parcialmente implementado**. 
-  - `Parse.y` define el parser, que está **parcialmente implementado**. Para ello, este archivo especifica la gramática en BNF y provee el lexer. El módulo `Parse.hs` es generado por la herramienta `Happy` (explicada en la Sección 3 de la consigna) al hacer `stack build`, y se guarda en un directorio oculto.
-  - `Simplytyped` tiene las funciones que hacen funcionar al intérprete y el inferidor de tipos, ambos **parcialmente implementados**.
+El archivo que se carga en un inicio esta pensado para que se carguen únicamente definiciones y gastos. Y estos se escribirán de la manera que lo muestra la gramática def. Estos se correrán en el orden en el que fueron escritos, así que si se genera un gasto de una persona, previamente se tendría que haber definida a esta. 
 
-* En el directorio `Ejemplos` está el preludio, con algunos términos del lambda cálculo simplemente tipado (STLC). En este directorio van a resolver el ejercicio 11.
+A continuación se explicara como se unas las operaciones:
+* `DEFINEP nombre`: Crea una persona con el nombre dado.
+* `DEFINEG nombre participantes`: Crea un grupo con el nombre y participantes dados (además de uno mismo).
+* `DEBTP nombre monto`: Crea un gasto entre `nombre` y uno mismo pagado por el otro con un monto dado.
+* `DEBTG nombre grupo monto`: Crea un gasto en el grupo pagado por `nombre` con un monto dado.
+* `EXPENSE nombre monto`: En este caso, `nombre` puede ser de una persona o un grupo. Allí se crea un gasto pagado por uno mismo con el monto dado.
 
-* El resto de los archivos son de configuración del proyecto.
+### Interprete
 
-**IMPORTANTE:** Por favor, no cambiar los nombres de los módulos, tipos, constructores, funciones, etc. Ante cualquier duda consulte a su docente de cabecera.
+En el interprete se podrán escribir comandos que sirvan para obtener datos a partir de lo cargado en el archivo. Estas son, entre otros, los que se ven en la gramática op. 
 
-### ¿Cómo ejecutarlo?
+A continuación se explicara como se unas las operaciones:
+* `CALCULATE nombre`: Calcula las deudas finales sobre la persona o grupo `nombre`.
+* `CALCULATEALL`: Calcula las deudas finales sobre todas las personas y grupos.
+* `REGISTRY nombre`: Devuelve las operaciones hechas sobre la persona o grupo `nombre`.
+* `MEMBERS nombre`: Devuelve los participantes del grupo `nombre` o una lista con ese mismo elemento de ser `nombre` una persona.
 
-Una vez compilado el proyecto, se puede correr el ejecutable definido en `app/Main.hs` haciendo:
-```
-stack exec TP3-exe 
-```
-
-Esto lanzará el evaluador interactivo de lambda cálculo simplemente tipado a implementar en este trabajo. Con el comando `:?` pueden leer sobre el resto de los comandos disponibles."# ALP-TP3-2023" 
-# Debt-Calculator
+Adicionalmente están los siguientes comandos:
+* `:load`: Carga un nuevo archivo `.odt` eliminando los datos generados por el archivo anterior.
+* `:browse`: Muestra los nombre de los grupos y personas.
+* `:print`: Imprime el entorno.
+* `:quit`: Sale del interprete.
+* `:help`: Muestra la lista de comandos.
