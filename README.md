@@ -13,18 +13,14 @@ Antes de hablar sobre cada uno de estos ítem por separado, se presentara la gra
 
 * `digit ::= ‘0’|‘1’|...|‘9’`
 * `val ::= digit | digit val`
-<br>
 * `letter ::= ‘a’|‘b’|...|‘z’`
 * `var ::= letter |letter var`
-<br>
 * `names ::= var ‘,’ names |var`
-<br>
 * `def ::= ‘DEF IN EP ’ var`
 * `|‘DEFINEG’ var ‘[’ names ‘]’`
 * `|‘DEBTP ’ var val`
 * `|‘DEBTG’ var var val`
 * `|‘EXPENSE’ var val`
-<br>
 * `op ::= ‘CALCULATE’ var`
 * `|‘CALCULATEALL’`
 * `|‘REGISTRY’ var`
